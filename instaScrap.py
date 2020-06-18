@@ -1,15 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
-import time
-import re
-import json
+from selenium.webdriver.chrome.options import Options
+import time, re, json, os
+
 
 # Setting Driver
-driver = webdriver.Chrome()
+chrome_options =Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(chrome_options=chrome_options)
 
 # Url For InstaPage
-url = "https://www.instagram.com/bottleneckgallery/"
+username = ""
+url = f"https://www.instagram.com/{username}/"
 
 # Scrolling Down The Page To Get More Results
 ht = 1080
@@ -45,7 +48,7 @@ with open('imgSrc.json', 'w') as file:
   for url in imgLinks:
     try:
       driver.get(url)
-      time.sleep(1)
+      time.sleep(0.5)
       src = driver.page_source
       soup = BeautifulSoup(src, 'html.parser')
     
@@ -65,7 +68,7 @@ driver.quit()
 # Downloading Images
 cnt = 0
 for link in images:
-  with open(f"./img/BTG/btg{cnt}.jpg", 'wb') as file:
+  with open(f"./img/itsyourjapan/Japan{cnt}.jpg", 'wb') as file:
     r = requests.get(link)
     file.write(r.content)
     print(f"Downloaded Image No {cnt}")
